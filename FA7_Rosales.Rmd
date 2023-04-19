@@ -1,1 +1,321 @@
+---
+output: html_document
+title: "Uniform Probability of Memory Sticks"
+---
 
+
+# Problem No.1:
+A machine produces memory sticks of varying lengths, distributed uniformly between 2 and 12 mm. Memory sticks longer than 10 mm do not meet the design criterion, and must be scrapped.
+
+# Given
+<b> <li> Memory sticks distributed uniformly between 2 and 12 mm </li>
+</b>
+
+<button onclick="hideoutput()" style="background: #e8ccd7;"> 
+HIDE/SHOW
+</button>
+<div id="codeinputhere" style="display:block;">
+```{r}
+curve(dunif(x,2,12), 0, 14, xlab = "x", ylab = "Density", col = "blue")
+
+x <- seq(0, 14, 0.001)
+
+lines(x, dunif(x, 2,12), type = "h", col = "grey")
+
+text(7, 0.1, "P(2 < X < 12)", col = "black", font = 2)
+
+legend("topright", legend = c("PDF"), col = "blue")
+
+```
+</div>
+<script>
+function hideoutput() {
+  var x = document.getElementById("codeinputhere");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+    
+    
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+# a.)Calculate the probability that a memory stick will be scrapped.
+
+```{r letter_a, fig.html=TRUE}
+1 - punif(10, 2,12)
+
+
+
+```
+<br>
+
+<br>
+
+# PDF / CDF
+
+<b> <li> Probability density function & Cumulative Distribution Function </li>
+</b>
+
+
+<button onclick="hideoutput1()" style="background: #e8ccd7;"> 
+HIDE/SHOW
+</button>
+<div id="codeinputhere1" style="display:block;">
+
+
+
+```{r pdf_cdf, fig.html=TRUE}
+
+
+par(mfrow = c(1, 2))
+
+curve(dunif(x, 10, 12), xlim = c(2, 12), ylab="", main = "PDF",xlab="Length (mm)")
+
+curve(punif(x, 10, 12), xlim = c(2, 12), ylab="",main = "CDF",xlab="Length (mm)")
+```
+</div>
+<script>
+function hideoutput1() {
+  var x = document.getElementById("codeinputhere1");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+
+
+
+
+
+# b.) Histogram of Memory Stick (without scrapped)
+```{r letter_a2, fig.html=TRUE}
+set.seed(123)
+x <- runif(50, 2, 12)
+x <- x[x <= 10]
+hist(x, main = "Histogram of Memory Stick ", xlab = "Length (mm)", col="pink")
+
+sim_mean <- mean(x)
+sim_var <- var(x)
+
+cat("Simulated Mean:", sim_mean, "\n")
+cat("Simulated Variance:", sim_var)
+```
+
+
+<br>
+<br>
+<br>
+
+# Problem No.2:
+Students in an electronic engineering laboratory measure current in using an ammeter. Due to several random factors, the measurement X follows the pdf
+
+$$ f(x) = 0.025x + b,  2<x<6 $$
+
+
+# PDF / CDF
+
+<b> <li> Probability density function & Cumulative Distribution Function </li>
+</b>
+
+
+<button onclick="hideoutput2()" style="background: #e8ccd7;"> 
+HIDE/SHOW
+</button>
+<div id="codeinputhere2" style="display:block;">
+
+
+
+
+```{r pdfcdf no2, fig.html=TRUE}
+par(mfrow = c(1, 2))
+curve(dunif(x, 2, 6), xlim = c(0, 8), ylab="", main = "PDF")
+
+
+curve(punif(x, 2, 6), xlim = c(0, 8), ylab="",main = "CDF")
+
+```
+
+</div>
+<script>
+function hideoutput2() {
+  var x = document.getElementById("codeinputhere2");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+
+
+
+
+
+# a.) Let <b> b=0.15 </b> as desired. <br>
+Getting the Probability Density Function of X
+    
+
+```{r a no2, fig.html=TRUE}
+
+b <- 0.15
+
+funct <- function(x) {
+  0.025*x + b
+}
+
+curve(funct, 2, 6, xlim = c(0, 8))
+
+integral <- integrate(funct, 2, 6)
+answer <- integral[["value"]]
+
+cat("The Integral is equals to", answer, "\n")
+
+
+
+
+```
+
+Since According to the 1st Property of <i> pdf </i> of X which is; <br> 
+
+$$\int_{-\infty}^{\infty} f(x) dx = 1$$
+
+<br> <b> $\therefore\ b \text{ is indeed equal to } 0.15$
+ </b>
+ <br> <br> 
+ 
+# b.) Find the probability that the measurement of the current exceeds 3.
+ 
+
+```{r b no2, fig.html=TRUE}
+
+a <- 3
+
+exceed3 <- integrate(funct, a,  6)
+answer_2 <- exceed3[["value"]]
+cat("The probability that the measurement exceeds 3 is", round(answer_2, 3))
+```
+
+<br> <b> $\therefore\ \text{ The probability that the measurement exceeds 3 is 0.7875  }$
+ </b><br> <br> 
+
+# c.)  Find E(X).
+ 
+
+```{r c no2, fig.html=TRUE}
+
+b <- 0.15
+
+funct <- function(x) {
+  0.025*x + b
+}
+newinteg <- function(x) {x * funct(x)}
+
+e_x <- integrate(newinteg, 2, 6)
+
+answer_3 <- e_x [["value"]]
+# Print the result
+cat("E(X) is", round(answer_3, 2))
+
+
+```
+
+<br> <b> $\therefore\ \text{ E(X) is 4.13  }$
+ </b>
+
+
+<br>
+<br>
+<br>
+
+# Problem No.3:
+$$ \text {In a radio communications system, the phase difference X between  the transmitter} $$
+$$ \text { and receiver is modeled as having a uniform density in [−𝜋,+𝜋]. Find
+P(X ≤ 0) and P(X ≤ 𝜋∕2).}$$
+
+
+<br>
+<br>
+
+# PDF / CDF
+
+<b> <li> Probability density function & Cumulative Distribution Function </li>
+</b>
+
+
+<button onclick="hideoutput3()" style="background: #e8ccd7;"> 
+HIDE/SHOW
+</button>
+<div id="codeinputhere3" style="display:block;">
+
+
+```{r figure3, fig.html=TRUE}
+
+
+par(mfrow = c(1, 2))
+curve(dunif(x, -pi, pi), xlim = c(-10, 10), ylab="", main = "PDF")
+curve(punif(x, -pi, pi), xlim = c(-10, 10), ylab="", main = "CDF")
+
+
+```
+
+</div>
+<script>
+function hideoutput3() {
+  var x = document.getElementById("codeinputhere3");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+
+
+
+
+<br>
+Using the Definition of PDF 
+
+$$
+f(x) = \begin{cases}
+      \frac{1}{b-a}, & \text{if}\ a \leq x \leq b \\
+      0, & \text{otherwise}
+    \end{cases}
+$$
+
+Let a= 𝜋 and b =𝜋
+
+```{r no3, fig.html=TRUE}
+
+a <- -pi
+b <- pi
+
+
+PDF <- Vectorize(function(x) {
+  if (x < a || x > b) {
+    return(0)
+  }
+  return(1 / (b - a))
+})
+
+p_0 <- integrate(PDF, a, 0)
+answer_4 <- p_0 [["value"]]
+
+p_over_2 <- integrate(PDF, a, pi/2)
+answer_5 <- p_over_2 [["value"]]
+
+cat("P(X ≤ 0) =", answer_4, "\n")
+cat("P(X ≤ 𝜋/2) =", answer_5, "\n")
+
+
+```
+
+
+<br> <b> $\therefore\ \text{ P(X ≤ 0) is 0.5  }$
+ </b>
+ 
+ <br> <b> $\therefore\ \text{ P(X ≤ 𝜋/2) is 0.75  }$
+ </b>
